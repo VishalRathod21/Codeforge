@@ -2,9 +2,6 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![PyPI](https://img.shields.io/pypi/v/codeforge)](https://pypi.org/project/codeforge/)
-[![Documentation](https://img.shields.io/badge/docs-available-brightgreen)](https://vishalrathod21.github.io/Codeforge/)
 
 CodeForge is an AI-powered project scaffolding tool that transforms natural language descriptions into fully functional, production-ready project structures. It automates project setup, allowing developers to focus on writing code rather than configuration.
 
@@ -110,6 +107,9 @@ codeforge create "Description" [OPTIONS]
 ```bash
 # Create a project in current directory
 codeforge create "A task manager with FastAPI"
+
+# Create a project in commands
+codeforge create "ETL pipeline with Python, Pandas, and PostgreSQL" -o ./data-pipeline
 
 # Specify template and output
 codeforge create "Data analysis with PyTorch" -t ml -o ./ml-project
