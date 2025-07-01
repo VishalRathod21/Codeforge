@@ -91,7 +91,7 @@ def create(
             console.print(f"Template: {template or 'default'}")
             console.print(f"Force overwrite: {force}")
         
-        console.print(f"\n[bold blue]🤖 Generating project structure for:[/] {project_description}")
+        console.print(f"\n[bold blue]Generating project structure for:[/] {project_description}")
         
         # Generate project structure using LLM
         try:
@@ -101,11 +101,11 @@ def create(
                 import traceback
                 console.print("\n[red]Debug information:[/]")
                 console.print(traceback.format_exc())
-            console.print(f"[bold red]❌ Error generating project structure: {str(e)}[/]")
+            console.print(f"[bold red]Error generating project structure: {str(e)}[/]")
             raise typer.Exit(1)
         
         if not structure:
-            console.print("[bold red]❌ Failed to generate project structure: Empty response from API[/]")
+            console.print("[bold red]Failed to generate project structure: Empty response from API[/]")
             raise typer.Exit(1)
             
         if debug:
@@ -117,28 +117,28 @@ def create(
             created_files = create_project_structure(structure, output_path, force=force)
             
             if not created_files:
-                console.print("[yellow]⚠️  No files were created (they might already exist)[/]")
+                console.print("[yellow]Warning: No files were created (they might already exist)[/]")
             else:
-                console.print(f"\n[bold green]✅ Successfully created {len(created_files)} files:[/]")
+                console.print(f"\n[bold green]Successfully created {len(created_files)} files:[/]")
                 for file in created_files[:10]:  # Show first 10 files to avoid flooding
                     console.print(f"  - {file}")
                 if len(created_files) > 10:
                     console.print(f"  ... and {len(created_files) - 10} more")
                 
-                console.print("\n[bold]🎉 Project generated successfully![/]")
+                console.print("\n[bold]Project generated successfully![/]")
                 
         except Exception as e:
             if debug:
                 import traceback
                 console.print("\n[red]Debug information:[/]")
                 console.print(traceback.format_exc())
-            console.print(f"[bold red]❌ Error creating project structure: {str(e)}[/]")
+            console.print(f"[bold red]Error creating project structure: {str(e)}[/]")
             raise typer.Exit(1)
         
     except typer.Exit:
         raise
     except Exception as e:
-        console.print(f"[bold red]❌ Unexpected error: {str(e)}[/]")
+        console.print(f"[bold red]Unexpected error: {str(e)}[/]")
         if debug:
             import traceback
             console.print("\n[red]Debug information:[/]")

@@ -21,7 +21,7 @@ def create_file(file_path: Path, content: str, force: bool = False) -> bool:
     """
     try:
         if file_path.exists() and not force:
-            console.print(f"[yellow]⚠️  File already exists, skipping: {file_path}[/]")
+            console.print(f"[yellow]Warning: File already exists, skipping: {file_path}[/]")
             return False
             
         # Create parent directories if they don't exist
@@ -32,7 +32,7 @@ def create_file(file_path: Path, content: str, force: bool = False) -> bool:
             
         return True
     except Exception as e:
-        console.print(f"[red]❌ Error creating file {file_path}: {str(e)}[/]")
+        console.print(f"[red]Error creating file {file_path}: {str(e)}[/]")
         return False
 
 def create_directory(dir_path: Path, force: bool = False) -> bool:
@@ -51,13 +51,13 @@ def create_directory(dir_path: Path, force: bool = False) -> bool:
             if force:
                 shutil.rmtree(dir_path)
             else:
-                console.print(f"[yellow]⚠️  Directory already exists, skipping: {dir_path}[/]")
+                console.print(f"[yellow]Warning: Directory already exists, skipping: {dir_path}[/]")
                 return False
                 
         dir_path.mkdir(parents=True, exist_ok=True)
         return True
     except Exception as e:
-        console.print(f"[red]❌ Error creating directory {dir_path}: {str(e)}[/]")
+        console.print(f"[red] Error creating directory {dir_path}: {str(e)}[/]")
         return False
 
 def create_project_structure(structure: Dict[str, Any], base_path: Path, force: bool = False) -> List[str]:
@@ -121,7 +121,7 @@ def load_template(template_name: str) -> Optional[Dict[str, Any]]:
     except FileNotFoundError:
         return None
     except json.JSONDecodeError as e:
-        console.print(f"[red]❌ Error parsing template {template_name}: {str(e)}[/]")
+        console.print(f"[red] Error parsing template {template_name}: {str(e)}[/]")
         return None
 
 if __name__ == "__main__":

@@ -145,83 +145,70 @@ templates:
     description: "Machine Learning project"
 ```
 
+## 📋 Requirements
+
+- Python 3.10+
+- [Groq API key](https://console.groq.com/)
+
+## 🛠️ Usage
+
+```bash
+# Show help
+codeforge --help
+
+# Show version
+codeforge version
+
+# List available templates
+codeforge list-templates
+
+# Create a project
+codeforge create "Project description" --output ./my-project --template web
+```
+
+### Common Options
+
+```bash
+# Specify template
+codeforge create "Project" --template python-fastapi
+
+# Set output directory
+codeforge create "Project" --output my-project
+
+# Set project author and license
+codeforge create "Project" --author "Your Name <email@example.com>" --license MIT
+```
+
 ## 🏗️ Project Structure
 
 ```
 codeforge/
 ├── main.py                  # CLI entry point
-├── llm_agent.py            # AI integration with Groq
-├── structure_generator.py   # Project structure generation
-├── templates/              # Project templates
-│   ├── web/               # Web application template
-│   ├── api/               # API service template
-│   └── ml/                # Machine learning template
-└── utils/                 # Utility functions
-    ├── file_utils.py      # File operations
-    └── config_utils.py    # Configuration handling
-```
-
-## 🧪 Testing
-
-Run the test suite to ensure everything works as expected:
-
-```bash
-# Install test dependencies
-pip install -e ".[test]"
-
-# Run tests
-pytest
-
-# Run with coverage report
-pytest --cov=codeforge tests/
+├── llm_agent.py            # AI integration
+├── structure_generator.py   # Project generation
+├── prompts/                # AI prompt templates
+└── templates/              # Project templates
+    ├── web_template.json
+    ├── data_science_template.json
+    └── ml_engineer_template.json
 ```
 
 ## 🤝 Contributing
 
-We welcome contributions from the community! Here's how you can help:
+Contributions are welcome! Please follow these steps:
 
-1. **Report Bugs**: Open an issue with detailed reproduction steps
-2. **Suggest Features**: Share your ideas for new features
-3. **Submit Pull Requests**: Follow these steps:
-   ```bash
-   # Fork the repository
-   git clone https://github.com/your-username/Codeforge.git
-   cd Codeforge
-   
-   # Create a new branch
-   git checkout -b feature/your-feature
-   
-   # Make your changes and commit
-   git commit -am 'Add some amazing feature'
-   
-   # Push to the branch
-   git push origin feature/your-feature
-   
-   # Open a Pull Request
-   ```
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📚 Additional Resources
-
-- [Documentation](https://vishalrathod21.github.io/Codeforge/)
-- [Issue Tracker](https://github.com/VishalRathod21/Codeforge/issues)
-- [Changelog](CHANGELOG.md)
-
-## 🙏 Acknowledgments
-
-- Built with ❤️ using Python
-- Powered by [Groq AI](https://groq.com/)
-- Inspired by modern development tools and workflows
-
 ---
 
 <p align="center">
   Made with ❤️ by <a href="https://github.com/VishalRathod21">Vishal Rathod</a>
-  <br>
-  <a href="https://github.com/VishalRathod21/Codeforge">GitHub</a> • 
-  <a href="https://twitter.com/yourhandle">Twitter</a> • 
-  <a href="https://linkedin.com/in/yourprofile">LinkedIn</a>
 </p>
