@@ -4,31 +4,83 @@ from pathlib import Path
 from typing import Optional
 from rich.console import Console
 from rich.prompt import Confirm
+import importlib.metadata
 
 from codeforge.llm_agent import generate_project_structure
 from codeforge.structure_generator import create_project_structure
 
-app = typer.Typer(help="AI-powered project structure generator")
+# Version
+__version__ = importlib.metadata.version('codeforge')
+
+app = typer.Typer(
+    help="""AI-powered project structure generator
+    
+    Generate complete project structures with a single command using AI.
+    """,
+    add_completion=False,
+    no_args_is_help=True
+)
 console = Console()
+
+# Version command
+@app.command()
+def version():
+    """Show the current version of CodeForge"""
+    console.print(f"[bold]CodeForge[/] version [cyan]{__version__}[/]")
+    console.print("\n[dim]AI-powered project structure generator[/]")
+
+# Add version flag
+app.callback(invoke_without_command=True)
+def main(version: bool = typer.Option(
+    None, 
+    "--version", 
+    "-v", 
+    help="Show version and exit.",
+    is_eager=True
+)):
+    """CodeForge - AI-powered project structure generator"""
+    if version:
+        version()
+        raise typer.Exit()
 
 @app.command()
 def create(
-    project_description: str = typer.Argument(..., help="Description of the project to generate"),
+    project_description: str = typer.Argument(
+        ...,
+        help="Description of the project to generate (e.g., 'A Python web app with FastAPI and React')"
+    ),
     output_dir: str = typer.Option(
-        ".", "--output", "-o", help="Output directory for the project"
+        ".",
+        "--output",
+        "-o",
+        help="Output directory for the project (default: current directory)",
+        show_default=True
     ),
     template: Optional[str] = typer.Option(
-        None, "--template", "-t", help="Project template to use"
+        None,
+        "--template",
+        "-t",
+        help="Project template to use (see available templates with 'list-templates')",
     ),
     force: bool = typer.Option(
-        False, "--force", "-f", help="Overwrite existing files without asking"
+        False,
+        "--force",
+        "-f",
+        help="Overwrite existing files without asking for confirmation"
     ),
     debug: bool = typer.Option(
-        False, "--debug", help="Show debug information"
+        False,
+        "--debug",
+        help="Enable debug mode to show detailed error information"
     ),
 ):
     """
-    Generate a project structure based on the provided description
+    Generate a complete project structure based on your description.
+    
+    Examples:
+        codeforge create "A Python web app with FastAPI and React"
+        codeforge create "A data science project with PyTorch" --output ./my-project
+        codeforge create "A CLI tool in Python" --template cli
     """
     try:
         output_path = Path(output_dir).resolve()
@@ -95,8 +147,11 @@ def create(
 
 @app.command()
 def list_templates():
-    """List available project templates"""
-    # TODO: Implement template listing
+    """List all available project templates
+    
+    Examples:
+        codeforge list-templates
+    """
     console.print("\n[bold]Available templates:[/]")
     console.print("  - default (No specific template)")
     console.print("  - web (Web application template)")
