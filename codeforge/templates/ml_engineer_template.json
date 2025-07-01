@@ -1,0 +1,108 @@
+{
+  "project_name": "ml_engineering_project",
+  "structure": [
+    {
+      "type": "file",
+      "name": "README.md",
+      "content": "# ML Engineering Project\n\nA production-ready machine learning project with MLOps best practices.\n\n## Features\n- Model training pipeline\n- Data versioning with DVC\n- Experiment tracking with MLflow\n- API serving with FastAPI\n- Testing and CI/CD\n- Monitoring\n\n## Quick Start\n```bash\n# Install dependencies\npip install -r requirements.txt\n\n# Configure environment\ncp .env.example .env\n\n# Run tests\npytest tests/\n\n# Start the API\nuvicorn app.main:app --reload\n```"
+    },
+    {
+      "type": "file",
+      "name": "requirements.txt",
+      "content": "# Core\nnumpy>=1.21.0\npandas>=1.3.0\nscikit-learn>=1.0.0\nxgboost>=1.5.0\n\n# Deep Learning\ntorch>=1.9.0\ntorchvision>=0.10.0\ntransformers>=4.12.0\n\n# MLOps\nmlflow>=1.20.0\ndvc[all]>=2.9.0\nprefect>=1.0.0\npydantic>=1.8.0\n\n# API\nfastapi>=0.68.0\nuvicorn>=0.15.0\npython-multipart>=0.0.5\n\n# Data Processing\npyarrow>=6.0.0\nfeather-format>=0.4.1\n\n# Testing\npytest>=6.2.0\npytest-cov>=2.12.0\n\n# Code Quality\nblack>=21.7b0\nflake8>=3.9.2\nmypy>=0.910\n\n# Monitoring\nprometheus-client>=0.12.0\nopentelemetry-api>=1.4.0"
+    },
+    {
+      "type": "file",
+      "name": ".gitignore",
+      "content": "# Python\n__pycache__/\n*.py[cod]\n*$py.class\n\n# Virtual Environment\nvenv/\nenv/\n\n# Jupyter Notebook\n.ipynb_checkpoints\n*/.ipynb_checkpoints/*\n\n# Data files\n*.csv\n*.h5\n*.hdf5\n*.pkl\n*.pkl.gz\n*.parquet\n*.feather\n\n# DVC\n.dvc/\n.dvc/tmp\n.dvc/cache\n.dvc/plots/\n\n# MLflow\nmlruns/\nmlruns.db/\n\n# Environment variables\n.env\n\n# IDE\n.idea/\n.vscode/\n*.swp\n*.swo"
+    },
+    {
+      "type": "directory",
+      "name": "data",
+      "children": [
+        {
+          "type": "file",
+          "name": ".gitkeep",
+          "content": ""
+        }
+      ]
+    },
+    {
+      "type": "directory",
+      "name": "src",
+      "children": [
+        {
+          "type": "file",
+          "name": "__init__.py",
+          "content": "# Initialize src package"
+        },
+        {
+          "type": "file",
+          "name": "data",
+          "content": "# Data processing module\nfrom pathlib import Path\nimport pandas as pd\nimport numpy as np\nfrom typing import Tuple, Dict, Any\n\nclass DataProcessor:\n    def __init__(self, config: Dict[str, Any]):\n        self.config = config\n    \n    def load_data(self, filepath: str) -> pd.DataFrame:\n        \"\"\"Load data from file\"\"\"\n        return pd.read_parquet(filepath)\n    \n    def preprocess(self, df: pd.DataFrame) -> pd.DataFrame:\n        \"\"\"Preprocess the input data\"\"\"\n        # Add preprocessing steps here\n        return df\n    \n    def split_data(\n        self, df: pd.DataFrame, test_size: float = 0.2, random_state: int = 42\n    ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:\n        \"\"\"Split data into train and test sets\"\"\"\n        from sklearn.model_selection import train_test_split\n        \n        X = df.drop(columns=[self.config['target_column']])\n        y = df[self.config['target_column']]\n        \n        return train_test_split(\n            X, y, test_size=test_size, random_state=random_state\n        )"
+        },
+        {
+          "type": "file",
+          "name": "model.py",
+          "content": "# Model training and evaluation\nfrom typing import Dict, Any, Tuple\nimport mlflow\nfrom sklearn.base import BaseEstimator\nimport numpy as np\n\nclass ModelTrainer:\n    def __init__(self, config: Dict[str, Any]):\n        self.config = config\n        self.model = self._initialize_model()\n    \n    def _initialize_model(self) -> BaseEstimator:\n        \"\"\"Initialize the model\"\"\"\n        from xgboost import XGBClassifier\n        return XGBClassifier(**self.config['model_params'])\n    \n    def train(\n        self, X_train: np.ndarray, y_train: np.ndarray, X_val: np.ndarray = None, y_val: np.ndarray = None\n    ) -> Dict[str, Any]:\n        \"\"\"Train the model with MLflow tracking\"\"\"\n        with mlflow.start_run():\n            # Log parameters\n            mlflow.log_params(self.config['model_params'])\n            \n            # Train model\n            self.model.fit(\n                X_train, y_train,\n                eval_set=[(X_val, y_val)] if X_val is not None else None,\n                **self.config['training_params']\n            )\n            \n            # Log metrics\n            train_score = self.model.score(X_train, y_train)\n            mlflow.log_metric('train_score', train_score)\n            \n            if X_val is not None and y_val is not None:\n                val_score = self.model.score(X_val, y_val)\n                mlflow.log_metric('val_score', val_score)\n            \n            # Log model\n            mlflow.sklearn.log_model(self.model, 'model')\n            \n            return {\n                'train_score': train_score,\n                'val_score': val_score if 'val_score' in locals() else None,\n                'model_uri': mlflow.get_artifact_uri('model')\n            }"
+        },
+        {
+          "type": "file",
+          "name": "api",
+          "content": "# API module for model serving\nfrom fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel\nimport numpy as np\nimport joblib\n\napp = FastAPI(\n    title=\"ML Model API\",\n    description=\"API for serving ML model predictions\",\n    version=\"0.1.0\"\n)\n\n# Load model\nmodel = None\n\nclass PredictionInput(BaseModel):\n    features: list\n\n@app.on_event(\"startup\")\nasync def load_model():\n    global model\n    # Load your model here\n    # model = joblib.load('path/to/model.pkl')\n    pass\n\n@app.get(\"/health\")\nasync def health_check():\n    return {\"status\": \"ok\"}\n\n@app.post(\"/predict\")\nasync def predict(input_data: PredictionInput):\n    try:\n        features = np.array(input_data.features).reshape(1, -1)\n        prediction = model.predict(features).tolist()\n        return {\"prediction\": prediction}\n    except Exception as e:\n        raise HTTPException(status_code=400, detail=str(e))"
+        },
+        {
+          "type": "file",
+          "name": "monitoring.py",
+          "content": "# Model monitoring utilities\nfrom prometheus_client import Counter, Gauge, Histogram, start_http_server\nimport time\nfrom typing import Optional, Dict, Any\n\n# Define metrics\nPREDICTION_COUNTER = Counter(\n    'model_predictions_total',\n    'Total number of predictions made',\n    ['model_name', 'status']\n)\n\nPREDICTION_LATENCY = Histogram(\n    'prediction_latency_seconds',\n    'Prediction latency in seconds',\n    ['model_name']\n)\n\nFEATURE_DRIFT = Gauge(\n    'feature_drift',\n    'Feature drift score',\n    ['feature_name']\n)\n\nclass ModelMonitor:\n    def __init__(self, model_name: str, port: int = 8000):\n        self.model_name = model_name\n        self.port = port\n        self.start_metrics_server()\n    \n    def start_metrics_server(self):\n        start_http_server(self.port)\n    \n    def log_prediction(self, status: str = 'success'):\n        PREDICTION_COUNTER.labels(\n            model_name=self.model_name,\n            status=status\n        ).inc()\n    \n    def log_latency(self, latency: float):\n        PREDICTION_LATENCY.labels(\n            model_name=self.model_name\n        ).observe(latency)\n    \n    def log_feature_drift(self, feature_name: str, drift_score: float):\n        FEATURE_DRIFT.labels(\n            feature_name=feature_name\n        ).set(drift_score)"
+        }
+      ]
+    },
+    {
+      "type": "directory",
+      "name": "tests",
+      "children": [
+        {
+          "type": "file",
+          "name": "__init__.py",
+          "content": ""
+        },
+        {
+          "type": "file",
+          "name": "test_data.py",
+          "content": "# Test data processing\nimport pytest\nimport pandas as pd\nimport numpy as np\nfrom src.data import DataProcessor\n\n@pytest.fixture\ndef sample_data():\n    return pd.DataFrame({\n        'feature1': np.random.rand(100),\n        'feature2': np.random.rand(100),\n        'target': np.random.randint(0, 2, 100)\n    })\n\ndef test_data_processing(sample_data):\n    config = {'target_column': 'target'}\n    processor = DataProcessor(config)\n    \n    # Test data loading\n    processed_data = processor.preprocess(sample_data)\n    assert not processed_data.isnull().any().any(), \"Data contains null values\"\n    \n    # Test train-test split\n    X_train, X_test, y_train, y_test = processor.split_data(processed_data)\n    assert len(X_train) > 0 and len(X_test) > 0, \"Train/test split failed\""
+        },
+        {
+          "type": "file",
+          "name": "test_model.py",
+          "content": "# Test model training\nimport pytest\nimport numpy as np\nfrom src.model import ModelTrainer\n\n@pytest.fixture\ndef sample_train_data():\n    X = np.random.rand(100, 5)\n    y = np.random.randint(0, 2, 100)\n    return X, y\n\ndef test_model_training(sample_train_data):\n    X, y = sample_train_data\n    config = {\n        'model_params': {\n            'n_estimators': 10,\n            'max_depth': 3\n        },\n        'training_params': {\n            'early_stopping_rounds': 5,\n            'verbose': False\n        }\n    }\n    \n    trainer = ModelTrainer(config)\n    result = trainer.train(X, y)\n    \n    assert 'train_score' in result, \"Training failed\"\n    assert 0 <= result['train_score'] <= 1, \"Invalid score range\""
+        }
+      ]
+    },
+    {
+      "type": "file",
+      "name": "dvc.yaml",
+      "content": "stages:\n  prepare:\n    cmd: python src/data/prepare.py\n    deps:\n      - src/data/prepare.py\n      - data/raw\n    outs:\n      - data/prepared\n    \n  train:\n    cmd: python src/train.py\n    deps:\n      - src/train.py\n      - data/prepared\n    outs:\n      - models\n    \n  evaluate:\n    cmd: python src/evaluate.py\n    deps:\n      - src/evaluate.py\n      - models\n      - data/prepared\n    outs:\n      - metrics\n    \n  serve:\n    cmd: uvicorn src.api.app:app --host 0.0.0.0 --port 8000\n    deps:\n      - src/api\n      - models"
+    },
+    {
+      "type": "file",
+      "name": "Dockerfile",
+      "content": "# Base image\nFROM python:3.9-slim\n\n# Set working directory\nWORKDIR /app\n\n# Install system dependencies\nRUN apt-get update && apt-get install -y \\\n    gcc \\\n    && rm -rf /var/lib/apt/lists/*\n\n# Copy requirements first to leverage Docker cache\nCOPY requirements.txt .\n\n# Install Python dependencies\nRUN pip install --no-cache-dir -r requirements.txt\n\n# Copy project files\nCOPY . .\n\n# Expose port\nEXPOSE 8000\n\n# Command to run the application\nCMD [\"uvicorn\", \"src.api.app:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]"
+    },
+    {
+      "type": "file",
+      "name": "docker-compose.yml",
+      "content": "version: '3.8'\n\nservices:\n  ml-api:\n    build: .\n    ports:\n      - \"8000:8000\"\n    environment:\n      - ENV=production\n    volumes:\n      - ./models:/app/models\n    depends_on:\n      - mlflow\n      - prometheus\n  \n  mlflow:\n    image: mlflow/mlflow:latest\n    ports:\n      - \"5000:5000\"\n    volumes:\n      - ./mlruns:/mlruns\n    command: >\n      mlflow server\n      --backend-store-uri sqlite:////mlruns/mlruns.db\n      --default-artifact-root /mlruns\n      --host 0.0.0.0\n      --port 5000\n  \n  prometheus:\n    image: prom/prometheus:latest\n    ports:\n      - \"9090:9090\"\n    volumes:\n      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml\n    command:\n      - '--config.file=/etc/prometheus/prometheus.yml'\n  \n  grafana:\n    image: grafana/grafana:latest\n    ports:\n      - \"3000:3000\"\n    volumes:\n      - grafana-storage:/var/lib/grafana\n    depends_on:\n      - prometheus\n\nvolumes:\n  grafana-storage:"
+    },
+    {
+      "type": "file",
+      "name": "Makefile",
+      "content": ".PHONY: install test lint format clean\n\n# Variables\nPYTHON = python3\nPIP = pip3\n\ninstall:\n\t$(PIP) install -r requirements.txt\n\ntest:\n\tpytest tests/ -v --cov=src --cov-report=term-missing\n\nlint:\n\tflake8 src/ tests/\n\tmypy src/ tests/\n\nformat:\n\tblack src/ tests/\n\ntrain:\n\t$(PYTHON) src/train.py\n\nserve:\n\tuvicorn src.api.app:app --reload\n\nclean:\n\tfind . -type f -name \"*.pyc\" -delete\n\tfind . -type d -name \"__pycache__\" -delete\n\trm -rf .pytest_cache/ .mypy_cache/"
+    },
+    {
+      "type": "file",
+      "name": ".github/workflows/ci-cd.yml",
+      "content": "name: CI/CD Pipeline\n\non:\n  push:\n    branches: [ main ]\n  pull_request:\n    branches: [ main ]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    \n    services:\n      mlflow:\n        image: mlflow/mlflow:latest\n        ports:\n          - 5000:5000\n    \n    steps:\n    - uses: actions/checkout@v2\n    \n    - name: Set up Python 3.9\n      uses: actions/setup-python@v2\n      with:\n        python-version: 3.9\n    \n    - name: Install dependencies\n      run: |\n        python -m pip install --upgrade pip\n        pip install -r requirements.txt\n    \n    - name: Run tests\n      run: |\n        pytest tests/ -v --cov=src --cov-report=xml\n    \n    - name: Upload coverage to Codecov\n      uses: codecov/codecov-action@v2\n      with:\n        file: ./coverage.xml\n        fail_ci_if_error: true\n  \n  deploy:\n    needs: test\n    if: github.ref == 'refs/heads/main'\n    runs-on: ubuntu-latest\n    \n    steps:\n    - uses: actions/checkout@v2\n    \n    - name: Set up Docker Buildx\n      uses: docker/setup-buildx-action@v1\n    \n    - name: Login to Docker Hub\n      uses: docker/login-action@v1\n      with:\n        username: ${{ secrets.DOCKER_HUB_USERNAME }}\n        password: ${{ secrets.DOCKER_HUB_TOKEN }}\n    \n    - name: Build and push Docker image\n      uses: docker/build-push-action@v2\n      with:\n        context: .\n        push: true\n        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ml-model:latest"
+    }
+  ]
+}

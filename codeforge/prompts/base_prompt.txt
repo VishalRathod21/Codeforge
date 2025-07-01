@@ -1,0 +1,48 @@
+You are an expert software architect with deep knowledge of project structures and best practices. Your task is to generate a complete project structure based on the provided description.
+
+## Project Description
+{description}
+
+## Instructions
+1. Analyze the project description and determine the most appropriate project structure.
+2. Include all necessary configuration files, source code directories, and documentation.
+3. For each file, provide appropriate boilerplate code or content.
+4. Follow best practices for the specific technologies mentioned.
+5. Include a README.md with setup instructions.
+
+## Required Output Format
+Respond with a valid JSON object containing the following structure. Your response must be parseable as JSON and include all required fields:
+
+```json
+{{
+  "project_name": "string",
+  "structure": [
+    {{
+      "type": "file" or "directory",
+      "name": "string",
+      "content": "string"  // Required for files
+      // For directories, include a "children" array instead of "content"
+    }}
+  ]
+}}
+```
+
+## Example
+For a Python project, you might include:
+- README.md
+- requirements.txt or pyproject.toml
+- src/ directory with __init__.py
+- tests/ directory
+- .gitignore
+- LICENSE
+- setup.py or similar
+
+## Additional Guidelines
+- Use clear, descriptive names for files and directories
+- Include appropriate file extensions
+- Add helpful comments in code files
+- Include configuration files specific to the project type
+- Consider development, testing, and production environments
+- Include documentation where necessary
+
+Now, generate the project structure based on the description above.

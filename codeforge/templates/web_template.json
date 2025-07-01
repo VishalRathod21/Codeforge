@@ -1,0 +1,52 @@
+{
+  "project_name": "web_project",
+  "structure": [
+    {
+      "type": "file",
+      "name": "README.md",
+      "content": "# Web Project\n\nA web application built with modern technologies.\n\n## Setup\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Start the development server:\n   ```bash\n   npm run dev\n   ```"
+    },
+    {
+      "type": "file",
+      "name": "package.json",
+      "content": "{\n  \"name\": \"web-project\",\n  \"version\": \"1.0.0\",\n  \"description\": \"A modern web application\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"dev\": \"next dev\",\n    \"build\": \"next build\",\n    \"start\": \"next start\"\n  },\n  \"dependencies\": {\n    \"next\": \"^14.0.0\",\n    \"react\": \"^18.2.0\",\n    \"react-dom\": \"^18.2.0\"\n  }\n}"
+    },
+    {
+      "type": "directory",
+      "name": "src",
+      "children": [
+        {
+          "type": "file",
+          "name": "app",
+          "content": "// Main application entry point"
+        },
+        {
+          "type": "file",
+          "name": "styles",
+          "content": "/* Global styles */"
+        },
+        {
+          "type": "file",
+          "name": "components",
+          "content": "// Reusable components"
+        }
+      ]
+    },
+    {
+      "type": "directory",
+      "name": "public",
+      "children": [
+        {
+          "type": "file",
+          "name": "favicon.ico",
+          "content": ""
+        }
+      ]
+    },
+    {
+      "type": "file",
+      "name": ".gitignore",
+      "content": "# Dependencies\nnode_modules/\n.next/\n\n# Environment variables\n.env*\n!.env.example\n\n# Build output\nout/\n\n# Debug logs\nnpm-debug.log*\nyarn-debug.log*\nyarn-error.log*"
+    }
+  ]
+}
