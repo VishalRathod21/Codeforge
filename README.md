@@ -1,4 +1,4 @@
-# CodeForge 🏗️
+# CodeForge 🚀
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
@@ -6,118 +6,121 @@
 [![PyPI](https://img.shields.io/pypi/v/codeforge)](https://pypi.org/project/codeforge/)
 [![Documentation](https://img.shields.io/badge/docs-available-brightgreen)](https://vishalrathod21.github.io/Codeforge/)
 
-> **CodeForge** is an AI-powered project scaffolding tool that transforms your natural language descriptions into fully functional, production-ready project structures. Designed for developers who value efficiency, it automates the tedious setup process so you can focus on writing great code.
+CodeForge is an AI-powered project scaffolding tool that transforms natural language descriptions into fully functional, production-ready project structures. It automates project setup, allowing developers to focus on writing code rather than configuration.
 
-## 🌟 Key Features
+## 📋 Table of Contents
+- ✨ [Features](#features)
+- ⚙️ [Installation](#installation)
+- 🚀 [Quick Start](#quick-start)
+- 💻 [Usage](#usage)
+- 🛠️ [Commands](#commands)
+- ⚙️ [Configuration](#configuration)
+- 📂 [Project Structure](#project-structure)
+- 🤝 [Contributing](#contributing)
+- 📄 [License](#license)
 
-- **AI-Powered Generation**: Convert natural language descriptions into complete project structures
+## ✨ Features
+
+- **AI-Powered Generation**: Convert natural language to project structures
 - **Multi-Language Support**: Supports various programming languages and frameworks
-- **Smart Templates**: Pre-configured templates for different project types (Web, API, ML, etc.)
-- **Git Integration**: Automatic Git repository initialization with .gitignore
-- **Dependency Management**: Automatic dependency detection and requirements.txt generation
-- **Customizable**: Extend with your own templates and configurations
+- **Templates**: Pre-configured templates for different project types
+- **Git Integration**: Automatic repository initialization
+- **Dependency Management**: Automatic requirements detection
+- **Customizable**: Extensible with custom templates
 
-## 📦 Installation
+## ⚙️ Installation
 
-### Prerequisites
+### 📋 Prerequisites
 - Python 3.10 or higher
 - pip (Python package manager)
 - [Groq API key](https://console.groq.com/) for AI features
 
-### Install via pip (Recommended)
+### 📦 Install via pip (Recommended)
 ```bash
 pip install codeforge
 ```
 
-### Install from Source
+### 🔧 Install from Source
 ```bash
-# Clone the repository
 git clone https://github.com/VishalRathod21/Codeforge.git
 cd Codeforge
-
-# Install in development mode
 pip install -e .
-
-# Install development dependencies
 pip install -r requirements.txt
 ```
 
-### Verify Installation
-```bash
-codeforge --version
-```
-
-## 🚀 Quick Start
-
-1. **Install CodeForge**:
-   ```bash
-   pip install codeforge
-   ```
-
-2. **Set up your API key**:
-   ```bash
-   # Linux/macOS
-   echo 'GROQ_API_KEY=your_api_key_here' > ~/.codeforge/.env
-   
-   # Windows
-   echo GROQ_API_KEY=your_api_key_here > %USERPROFILE%\.codeforge\.env
-   ```
-
-3. **Create your first project**:
-   ```bash
-   codeforge create "A Python web app with FastAPI and React"
-   ```
-
-## 🛠️ Commands Reference
-
-### `codeforge create`
-Generate a new project from a description.
-
-```bash
-codeforge create "Project description" [OPTIONS]
-```
-
-**Options:**
-- `-o, --output PATH`: Output directory (default: current directory)
-- `-t, --template TEXT`: Specify a template (web, api, ml, etc.)
-- `-f, --force`: Overwrite existing files
-- `--no-git`: Skip Git repository initialization
-- `--author TEXT`: Set project author
-- `--license TEXT`: Set project license (MIT, Apache-2.0, etc.)
-- `--python-version TEXT`: Set Python version (e.g., 3.10)
-
-**Examples:**
-```bash
-# Basic usage
-codeforge create "A REST API with FastAPI and PostgreSQL"
-
-# Specify output directory and template
-codeforge create "A machine learning project" -o ./ml-project -t ml
-
-# With additional options
-codeforge create "A web app with React and FastAPI" \
-  --author "Your Name <email@example.com>" \
-  --license MIT \
-  --python-version 3.10
-```
-
-### `codeforge list-templates`
-List all available project templates.
-
-```bash
-codeforge list-templates
-```
-
-### `codeforge version`
-Show the current version of CodeForge.
-
+### ✅ Verify Installation
 ```bash
 codeforge version
 ```
 
-## ⚙️ Configuration
+## 🚀 Quick Start
 
-### Environment Variables
+1. Set up your API key:
+   ```bash
+   # Linux/macOS/Windows
+   mkdir -p ~/.codeforge
+   echo 'GROQ_API_KEY=your_api_key_here' > ~/.codeforge/.env
+   ```
+
+2. Create projects with simple commands:
+   ```bash
+   # Web app
+   codeforge create "A blog with Django and React"
+   
+   # API service
+   codeforge create "REST API using FastAPI and MongoDB" -t api
+   ```
+
+## 💻 Usage
+
+### 🔍 Basic Commands
+
+#### 🏗️ Create a Project
+```bash
+codeforge create "Project description" [OPTIONS]
+```
+
+#### 📋 List Templates
+```bash
+codeforge list-templates
+```
+
+#### ℹ️ Show Version
+```bash
+codeforge version
+```
+
+## 🛠️ Commands
+
+### 🏗️ Create Command
+```bash
+codeforge create "Description" [OPTIONS]
+```
+
+**Options:**
+- `-o, --output PATH`: Output directory (default: current)
+- `-t, --template TEXT`: Template (web, api, ml, etc.)
+- `-f, --force`: Overwrite existing files
+- `--no-git`: Skip Git initialization
+- `--author TEXT`: Project author
+- `--license TEXT`: License (MIT, Apache-2.0, etc.)
+- `--python-version TEXT`: Python version (e.g., 3.10)
+
+**Examples:**
+```bash
+# Create a project in current directory
+codeforge create "A task manager with FastAPI"
+
+# Specify template and output
+codeforge create "Data analysis with PyTorch" -t ml -o ./ml-project
+
+# With custom options
+codeforge create "Python CLI tool" --author "Dev" --license MIT
+```
+
+## Configuration
+
+### 🔧 Environment Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
@@ -125,8 +128,8 @@ codeforge version
 | `CODEFORGE_TEMPLATE_DIR` | Custom templates directory | `~/.codeforge/templates/` |
 | `CODEFORGE_CACHE_DIR` | Cache directory | `~/.codeforge/cache/` |
 
-### Configuration File
-Create `~/.codeforge/config.yaml` to customize default settings:
+### ⚙️ Configuration File
+Create `~/.codeforge/config.yaml` to customize settings:
 
 ```yaml
 defaults:
@@ -137,65 +140,31 @@ defaults:
 
 templates:
   - name: web
-    description: "Full-stack web application"
+    description: "Web application"
     default: true
   - name: api
-    description: "REST API service"
+    description: "API service"
   - name: ml
     description: "Machine Learning project"
 ```
 
-## 📋 Requirements
-
-- Python 3.10+
-- [Groq API key](https://console.groq.com/)
-
-## 🛠️ Usage
-
-```bash
-# Show help
-codeforge --help
-
-# Show version
-codeforge version
-
-# List available templates
-codeforge list-templates
-
-# Create a project
-codeforge create "Project description" --output ./my-project --template web
-```
-
-### Common Options
-
-```bash
-# Specify template
-codeforge create "Project" --template python-fastapi
-
-# Set output directory
-codeforge create "Project" --output my-project
-
-# Set project author and license
-codeforge create "Project" --author "Your Name <email@example.com>" --license MIT
-```
-
-## 🏗️ Project Structure
+## 📂 Project Structure
 
 ```
 codeforge/
-├── main.py                  # CLI entry point
-├── llm_agent.py            # AI integration
-├── structure_generator.py   # Project generation
-├── prompts/                # AI prompt templates
-└── templates/              # Project templates
-    ├── web_template.json
-    ├── data_science_template.json
-    └── ml_engineer_template.json
+├── main.py                 # CLI entry point
+├── llm_agent.py           # AI integration
+├── structure_generator.py  # Project generation
+├── prompts/               # AI prompt templates
+└── templates/             # Project templates
+    ├── web.json
+    ├── api.json
+    └── ml.json
 ```
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
+Contributions are welcome! Follow these steps:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
