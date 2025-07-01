@@ -3,8 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Tests](https://github.com/yourusername/codeforge/actions/workflows/tests.yml/badge.svg)](https://github.com/yourusername/codeforge/actions)
-[![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://codeforge.readthedocs.io)
+[![Tests](https://github.com/VishalRathod21/Codeforge/actions/workflows/tests.yml/badge.svg)](https://github.com/VishalRathod21/Codeforge/actions)
 
 CodeForge is an intelligent CLI tool that generates complete, production-ready project structures using AI. Simply describe your project idea in natural language, and CodeForge will create a well-organized directory structure with all necessary files, configurations, and best practices.
 
@@ -28,16 +27,11 @@ CodeForge is an intelligent CLI tool that generates complete, production-ready p
 
 ## 🚀 Installation
 
-### Using pip (recommended)
-```bash
-pip install codeforge-ai
-```
-
-### Development Installation
+### Development Installation (Recommended)
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/codeforge.git
-cd codeforge
+git clone https://github.com/VishalRathod21/Codeforge.git
+cd Codeforge
 
 # Create and activate virtual environment
 python -m venv venv
