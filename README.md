@@ -1,8 +1,10 @@
 # CodeForge 🏗️
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![PyPI](https://img.shields.io/pypi/v/codeforge)](https://pypi.org/project/codeforge/)
+[![Downloads](https://static.pepy.tech/badge/codeforge/month)](https://pepy.tech/project/codeforge)
 
 CodeForge is an intelligent CLI tool that generates complete, production-ready project structures using AI. Simply describe your project idea in natural language, and CodeForge will create a well-organized directory structure with all necessary files, configurations, and best practices.
 
@@ -19,14 +21,19 @@ CodeForge is an intelligent CLI tool that generates complete, production-ready p
 
 ## 📦 Prerequisites
 
-- Python 3.8 or higher
+- Python 3.10 or higher
 - pip (Python package manager)
 - Git (optional but recommended)
 - [Groq API key](https://console.groq.com/) (for AI features)
 
 ## 🚀 Installation
 
-### Development Installation (Recommended)
+### Using pip (Recommended)
+```bash
+pip install codeforge
+```
+
+### Development Installation
 ```bash
 # Clone the repository
 git clone https://github.com/VishalRathod21/Codeforge.git
@@ -47,7 +54,106 @@ pre-commit install
 
 1. **Configure your API key**:
    ```bash
-   # Create a .env file
+   # Create a .env file in your project directory
+   echo "GROQ_API_KEY=your_api_key_here" > .env
+   ```
+   Replace `your_api_key_here` with your actual Groq API key.
+
+## 🛠️ Usage
+
+### Basic Commands
+
+```bash
+# Show help
+codeforge --help
+
+# Show version
+codeforge version
+# or
+codeforge --version
+
+# List available templates
+codeforge list-templates
+```
+
+### Creating a New Project
+
+```bash
+# Basic usage
+codeforge create "A Python web app with FastAPI and React"
+
+# Specify output directory
+codeforge create "A data science project with PyTorch" --output ./my-ds-project
+
+# Use a specific template
+codeforge create "A CLI tool in Python" --template cli
+
+# Force overwrite existing files
+codeforge create "A REST API with Flask" --force
+
+# Enable debug mode for troubleshooting
+codeforge create "A machine learning project" --debug
+```
+
+### Available Templates
+
+- `default` - Basic project structure
+- `web` - Web application template (Frontend + Backend)
+- `api` - REST API template
+- `cli` - Command-line application template
+- `ml` - Machine learning project template
+
+## 📂 Project Structure
+
+CodeForge generates a well-organized project structure based on best practices:
+
+```
+project-name/
+├── .github/               # GitHub workflows and templates
+├── docs/                  # Project documentation
+├── src/                   # Source code
+│   ├── __init__.py
+│   └── main.py            # Main application entry point
+├── tests/                 # Test files
+├── .env.example           # Example environment variables
+├── .gitignore             # Git ignore file
+├── README.md              # Project documentation
+└── requirements.txt       # Project dependencies
+```
+
+## 🔧 Configuration
+
+CodeForge can be configured using environment variables:
+
+- `GROQ_API_KEY`: Your Groq API key (required for AI features)
+- `CODEFORGE_TEMPLATE_DIR`: Custom templates directory
+- `CODEFORGE_CACHE_DIR`: Directory for caching generated templates
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Add tests if applicable
+5. Commit your changes (`git commit -m 'Add some amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ using Python
+- Powered by [Groq](https://groq.com/) for AI capabilities
+- Inspired by modern project templates and best practices
+
+## 📬 Contact
+
+For questions or feedback, please open an issue on [GitHub](https://github.com/VishalRathod21/Codeforge/issues).
    echo "GROQ_API_KEY=your_groq_api_key_here" > .env
    ```
 
