@@ -31,11 +31,7 @@ CodeForge is an AI-powered project scaffolding tool that transforms natural lang
 - Python 3.10 or higher
 - pip (Python package manager)
 - [Groq API key](https://console.groq.com/) for AI features
-
-### 📦 Install via pip (Recommended)
-```bash
-pip install codeforge
-```
+- 
 
 ### 🔧 Install from Source
 ```bash
@@ -43,6 +39,11 @@ git clone https://github.com/VishalRathod21/Codeforge.git
 cd Codeforge
 pip install -e .
 pip install -r requirements.txt
+```
+
+### 📦 Install via pip (Recommended)
+```bash
+pip install codeforge
 ```
 
 ### ✅ Verify Installation
@@ -93,15 +94,6 @@ codeforge version
 ```bash
 codeforge create "Description" [OPTIONS]
 ```
-
-**Options:**
-- `-o, --output PATH`: Output directory (default: current)
-- `-t, --template TEXT`: Template (web, api, ml, etc.)
-- `-f, --force`: Overwrite existing files
-- `--no-git`: Skip Git initialization
-- `--author TEXT`: Project author
-- `--license TEXT`: License (MIT, Apache-2.0, etc.)
-- `--python-version TEXT`: Python version (e.g., 3.10)
 
 **Examples:**
 ```bash
